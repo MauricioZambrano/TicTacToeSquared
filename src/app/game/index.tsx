@@ -1,10 +1,11 @@
 import { ReactElement } from "react";
+import { LocalTicTacToeBoard } from "./LocalTicTacToeBoard";
 
 
 export const Game = (): ReactElement => {
     return (
         <div>
-            this is the game :D
+            <LocalTicTacToeBoard bigBoardRC={{ row: 0, col: 0 }} />
         </div>
     );
 };

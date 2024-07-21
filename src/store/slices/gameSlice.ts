@@ -1,19 +1,41 @@
 import { Player } from '../../utils/constants';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+export type Tied = 'Tied';
+
+export interface RowCol {
+    row: number
+    col: number
+}
+
 export interface PlaySquareInterface {
-    bigSquare: number;
-    smallSquare: number;
+    bigBoardRC: RowCol;
+    localBoardRC: RowCol;
+}
+
+export interface TicTacToeBoard {
+    localBoard: number[][];
+    localGameWinner: Player | Tied | undefined;
 }
 
 export interface GameState {
-    board: number[][];
+    board: TicTacToeBoard[][];
     currentPlayer: number;
 }
 
+const initializeLocalBoard = (): number[][] => Array.from({ length: 3 }, () => Array(3).fill(null));
+
+const initializeTicTacToeBoard = (): TicTacToeBoard => ({
+    localBoard: initializeLocalBoard(),
+    localGameWinner: undefined
+});
+
+const initializeBoard = (): TicTacToeBoard[][] =>
+    Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => initializeTicTacToeBoard()));
+
 const initialState: GameState = {
-    board: Array.from({ length: 9 }, () => Array(9).fill(null)),
-    currentPlayer: 0
+    board: initializeBoard(),
+    currentPlayer: Player.PLAYER_1
 };
 
 export const gameSlice = createSlice({
@@ -21,9 +43,13 @@ export const gameSlice = createSlice({
     initialState,
     reducers: {
         playSquare: (state, action: PayloadAction<PlaySquareInterface>) => {
-            const { bigSquare, smallSquare } = action.payload;
+            const { bigBoardRC, localBoardRC } = action.payload;
 
-            state.board[bigSquare][smallSquare] = state.currentPlayer;
+            if (state.board[bigBoardRC.row][bigBoardRC.col].localBoard[localBoardRC.row][localBoardRC.col] === null) {
+                state.board[bigBoardRC.row][bigBoardRC.col].localBoard[localBoardRC.row][localBoardRC.col] = state.currentPlayer;
+            } else {
+                throw new Error('Attempting to override played square');
+            }
         },
         changePlayer: (state) => {
             state.currentPlayer = state.currentPlayer === Player.PLAYER_1 ? Player.PLAYER_2 : Player.PLAYER_1;

@@ -1,0 +1,11 @@
+.local-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .local-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+}

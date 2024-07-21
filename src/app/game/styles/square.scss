@@ -1,0 +1,29 @@
+@mixin border-style($property) {
+    #{$property}: var(--square-border-width, 2px) solid var(--square-border-color, black);
+}
+
+.square-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    background-color: var(--app-background-color, white);
+    color: black;
+
+    &.top-border {
+        @include border-style(border-top);
+    }
+
+    &.bottom-border {
+        @include border-style(border-bottom);
+    }
+
+    &.left-border {
+        @include border-style(border-left);
+    }
+
+    &.right-border {
+        @include border-style(border-right);
+    }
+}
