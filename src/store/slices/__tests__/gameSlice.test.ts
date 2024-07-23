@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { gameSlice, playSquare, changePlayer } from '../gameSlice';
+import { gameSlice, playSquare, changePlayer, GameStatus } from '../gameSlice';
 import { Player } from '../../../utils/constants';
 import type { GameState, RowCol, TicTacToeBoard } from '../gameSlice';
 import { AppStore } from '@/store/store';
 
-const initializeLocalBoard = (): number[][] => Array.from({ length: 3 }, () => Array(3).fill(null));
+const initializeLocalBoard = (): number[][] => Array.from({ length: 3 }, () => Array(3).fill(undefined));
 
 const initializeTicTacToeBoard = (): TicTacToeBoard => ({
     localBoard: initializeLocalBoard(),
@@ -29,7 +29,7 @@ describe('gameSlice', () => {
     it('should have initial state', () => {
         const state: GameState = store.getState().game;
         expect(state.board).toEqual(initializeBoard());
-        expect(state.currentPlayer).toEqual(0);
+        expect(state.currentPlayer).toEqual(Player.PLAYER_1);
     });
 
     it('should handle playSquare action', () => {
@@ -39,7 +39,7 @@ describe('gameSlice', () => {
         store.dispatch(playSquare({ bigBoardRC, localBoardRC }));
         const state: GameState = store.getState().game;
 
-        expect(state.board[bigBoardRC.row][bigBoardRC.col].localBoard[localBoardRC.row][localBoardRC.col]).toEqual(0);
+        expect(state.board[bigBoardRC.row][bigBoardRC.col].localBoard[localBoardRC.row][localBoardRC.col]).toEqual(Player.PLAYER_1);
     });
 
     it('should handle changePlayer action', () => {
@@ -60,7 +60,7 @@ describe('gameSlice', () => {
         store.dispatch(changePlayer());
 
         let state: GameState = store.getState().game;
-        expect(state.board[bigBoardRC.row][bigBoardRC.col].localBoard[localBoardRC.row][localBoardRC.col]).toEqual(0);
+        expect(state.board[bigBoardRC.row][bigBoardRC.col].localBoard[localBoardRC.row][localBoardRC.col]).toEqual(Player.PLAYER_1);
         expect(state.currentPlayer).toEqual(Player.PLAYER_2);
 
         store.dispatch(playSquare({ bigBoardRC: { row: 1, col: 1 }, localBoardRC: { row: 2, col: 2 } }));
@@ -80,4 +80,57 @@ describe('gameSlice', () => {
             store.dispatch(playSquare({ bigBoardRC, localBoardRC }));
         }).toThrow('Attempting to override played square');
     });
-});
+    it('should update macro game state when a player has won a local square', () => {
+        const bigBoardRC: RowCol = { row: 0, col: 0 };
+
+        // Simulate a winning condition for Player 1 in the local board at bigBoardRC
+        const winningMoves: RowCol[] = [
+            { row: 0, col: 0 },
+            { row: 0, col: 1 },
+            { row: 0, col: 2 }
+        ];
+
+        winningMoves.forEach(localBoardRC => {
+            store.dispatch(playSquare({ bigBoardRC, localBoardRC }));
+        });
+
+        const state: GameState = store.getState().game;
+
+        expect(state.board[0][0].localGameWinner).toEqual(Player.PLAYER_1);
+        expect(state.macroGameResults[0][0]).toEqual(Player.PLAYER_1);
+        expect(state.currentGameStatus).toEqual(GameStatus.IN_PROGRESS);
+        expect(state.gameWinner).toEqual(undefined);
+    });
+    it('should win game when a player has won 3 squares', () => {
+        const bigBoardRC: RowCol[] = [
+            { row: 0, col: 0 },
+            { row: 1, col: 0 },
+            { row: 2, col: 0 }
+        ];
+
+        // Simulate a winning condition for Player 1 in the local board at bigBoardRC
+        const winningMoves: RowCol[] = [
+            { row: 0, col: 0 },
+            { row: 0, col: 1 },
+            { row: 0, col: 2 },
+        ];
+
+        bigBoardRC.map((bigBoardRC) => {
+            winningMoves.forEach(localBoardRC => {
+                store.dispatch(playSquare({ bigBoardRC, localBoardRC }));
+            });
+        })
+
+
+        const state: GameState = store.getState().game;
+
+        expect(state.board[0][0].localGameWinner).toEqual(Player.PLAYER_1);
+        expect(state.macroGameResults[0][0]).toEqual(Player.PLAYER_1);
+        expect(state.board[1][0].localGameWinner).toEqual(Player.PLAYER_1);
+        expect(state.macroGameResults[1][0]).toEqual(Player.PLAYER_1);
+        expect(state.board[2][0].localGameWinner).toEqual(Player.PLAYER_1);
+        expect(state.macroGameResults[2][0]).toEqual(Player.PLAYER_1);
+        expect(state.currentGameStatus).toEqual(GameStatus.FINISHED);
+        expect(state.gameWinner).toEqual(Player.PLAYER_1);
+    });
+}); 

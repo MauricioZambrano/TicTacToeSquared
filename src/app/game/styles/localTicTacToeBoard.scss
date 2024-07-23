@@ -1,7 +1,30 @@
+@import '../../styles/globals.scss';
+
+@mixin local-board-borders($property) {
+    @include border-style($property, grey, 4px);
+}
+
 .local-board {
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    &.top-border {
+        @include local-board-borders(border-top);
+    }
+
+    &.bottom-border {
+        @include local-board-borders(border-bottom);
+    }
+
+    &.left-border {
+        @include local-board-borders(border-left);
+    }
+
+    &.right-border {
+        @include local-board-borders(border-right);
+    }
 
     .local-row {
         display: flex;

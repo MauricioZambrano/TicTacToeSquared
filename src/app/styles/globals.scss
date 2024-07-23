@@ -3,5 +3,15 @@
 :root {
   --app-background-color: white;
   --square-border-width: 2px;
+  --square-background-color: white;
   --square-border-color: black;
+  --square-hover-color: #ededed;
+  --square-side-length: 70px;
+  --player-one-background-color: #{$player_one};
+  --player-two-background-color: #{$player_two};
+  --tied-background-color: linear-gradient(45deg, var(--player-one-background-color), var(--player-two-background-color));
+}
+
+@mixin border-style($property, $color: var(--square-border-color, black), $width: var(--square-border-width, 1px)) {
+  #{$property}: $width solid $color;
 }

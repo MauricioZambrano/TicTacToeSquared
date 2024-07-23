@@ -1,15 +1,19 @@
+import "./styles/LocalTicTacToeBoard.scss"
 import { array_mapper } from "../../utils/constants"
 import { Square } from "./Square"
 import { RowCol } from '../../store/slices/gameSlice'
-import "./styles/LocalTicTacToeBoard.scss"
+import { getSquareClassname } from "../../utils/gameHelpers";
+import classNames from "classnames";
 
 export interface LocalTicTacToeBoardProps {
     bigBoardRC: RowCol;
 }
 
 export const LocalTicTacToeBoard: React.FC<LocalTicTacToeBoardProps> = ({ bigBoardRC }) => {
+    const localBoardClassnames = classNames('local-board', getSquareClassname(bigBoardRC))
+
     return (
-        <div className="local-board">
+        <div className={localBoardClassnames}>
             {array_mapper.map((_, localRow) => (
                 <div className="local-row" key={localRow}>
                     {array_mapper.map((_, localCol) => (

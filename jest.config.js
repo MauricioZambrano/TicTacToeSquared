@@ -3,7 +3,7 @@ module.exports = {
   testEnvironment: "jsdom",
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
-    '^.+\\.jsx?$': 'babel-jest',
+    "^.+\\.tsx?$": "babel-jest",
     '^.+\\.scss$': 'jest-transform-css'
   },
   moduleNameMapper: {

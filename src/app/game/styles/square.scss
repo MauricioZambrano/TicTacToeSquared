@@ -1,14 +1,12 @@
-@mixin border-style($property) {
-    #{$property}: var(--square-border-width, 2px) solid var(--square-border-color, black);
-}
+@import '../../styles/globals.scss';
 
 .square-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
-    background-color: var(--app-background-color, white);
+    background: var(--square-background-color, white);
+    width: var(--square-side-length);
+    height: var(--square-side-length);
     color: black;
 
     &.top-border {
@@ -25,5 +23,26 @@
 
     &.right-border {
         @include border-style(border-right);
+    }
+
+    &:not(.is-current-big-square) {
+        --square-background-color: var(--square-hover-color);
+    }
+
+    &.is-player-one {
+        --square-background-color: var(--player-one-background-color);
+    }
+
+    &.is-player-two {
+        --square-background-color: var(--player-two-background-color);
+    }
+
+    &:not(.is-played):hover {
+        --square-background-color: var(--square-hover-color);
+        cursor: pointer;
+    }
+
+    &.is-tied {
+        --square-background-color: var(--tied-background-color);
     }
 }

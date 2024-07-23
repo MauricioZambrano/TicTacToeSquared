@@ -1,10 +1,9 @@
-import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
 import { LocalTicTacToeBoard, LocalTicTacToeBoardProps } from '../LocalTicTacToeBoard';
 import { RowCol } from '../../../store/slices/gameSlice';
 import { array_mapper } from '../../../utils/constants';
 
-// Mock the Square component
 jest.mock('../Square', () => ({
     Square: ({ bigBoardRC, localBoardRC }: { bigBoardRC: RowCol; localBoardRC: RowCol }) => (
         <div data-testid={`square-${localBoardRC.row}-${localBoardRC.col}`}>
