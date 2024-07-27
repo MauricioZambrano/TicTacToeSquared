@@ -4,7 +4,7 @@ import { CurrentPlayerIndicator } from "./CurrentPlayerIndicator";
 import { useSelector } from "react-redux";
 import { GameStatus } from "../../store/slices/gameSlice";
 import { useGameStatus } from "../../store/selectors/gameSelectors";
-import { RootState } from "../../store/store";
+import { RootState } from "../../store/rootReducer";
 
 export const Game = (): ReactElement => {
     const gameStatus: GameStatus = useSelector((state: RootState) => useGameStatus(state));

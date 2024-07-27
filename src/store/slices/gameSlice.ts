@@ -82,7 +82,6 @@ export const gameSlice = createSlice({
             const isLocalGameWon: boolean | GameResults = checkWinner(state.board[bigBoardRC.row][bigBoardRC.col].localBoard);
 
             if (isPlayerOrTie(isLocalGameWon)) {
-                console.log(isLocalGameWon)
                 state.board[bigBoardRC.row][bigBoardRC.col].localGameWinner = isLocalGameWon as GameResults;
                 state.macroGameResults[bigBoardRC.row][bigBoardRC.col] = isLocalGameWon as GameResults;
 
@@ -101,3 +100,4 @@ export const gameSlice = createSlice({
 });
 
 export const { playSquare, changePlayer } = gameSlice.actions;
+export default gameSlice.reducer;

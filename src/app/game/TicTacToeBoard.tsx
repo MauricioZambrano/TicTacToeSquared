@@ -8,7 +8,7 @@ export const TicTacToeBoard: React.FC<TicTacToeBoardPops> = (props) => {
 
 
     return (
-        <div className="big-board">
+        <div className="big-board" data-testid="macro-board">
             {array_mapper.map((_, bigRow) => (
                 <div className="big-row" key={bigRow}>
                     {array_mapper.map((_, bigCol) => (

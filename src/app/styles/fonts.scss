@@ -1,0 +1,20 @@
+@mixin default-font($font-size: 16px,
+    $color: black,
+    $line-height: normal,
+    $font-style: normal,
+    $font-weight: 400) {
+    font-family: 'Courier New', Courier, monospace;
+    font-style: $font-style;
+    font-weight: $font-weight;
+    font-size: $font-size;
+    color: $color;
+    line-height: $line-height;
+}
+
+@mixin local-board-result-font {
+    @include default-font($font-size: 64px, $font-weight: 600);
+}
+
+@mixin current-player-text-font {
+    @include default-font($font-weight: 600);
+}

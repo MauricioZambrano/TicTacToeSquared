@@ -1,0 +1,23 @@
+@import '../../styles/fonts.scss';
+
+.local-board-result {
+    height: calc(var(--square-side-length) * 3);
+    width: calc(var(--square-side-length) * 3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--local-board-result-background-color);
+    @include local-board-result-font;
+
+    &.X-won {
+        --local-board-result-background-color: var(--player-one-background-color);
+    }
+
+    &.O-won {
+        --local-board-result-background-color: var(--player-two-background-color);
+    }
+
+    &.T-won {
+        --local-board-result-background-color: var(--tied-background-color);
+    }
+}

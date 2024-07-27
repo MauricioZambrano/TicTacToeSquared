@@ -2,7 +2,8 @@
 import "./styles/square.scss";
 import { useCurrentSquare, useIsCurrentBigSquare, useIsLocalGameFinished } from '../../store/selectors/gameSelectors';
 import { GameResults, RowCol, changePlayer, playSquare } from '../../store/slices/gameSlice';
-import { AppDispatch, RootState } from "../../store/store";
+import { AppDispatch } from "../../store/store";
+import { RootState } from "../../store/rootReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { getPlayerSymbol, getSquareClassname } from "../../utils/gameHelpers";
 import classNames from "classnames";

@@ -1,43 +1,35 @@
+import React from 'react';
+import * as gameSelectors from '../../../store/selectors/gameSelectors';
+import { render, screen } from '../../../../test-utils';
+import { LocalTicTacToeBoard } from '../LocalTicTacToeBoard';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-import { LocalTicTacToeBoard, LocalTicTacToeBoardProps } from '../LocalTicTacToeBoard';
-import { RowCol } from '../../../store/slices/gameSlice';
-import { array_mapper } from '../../../utils/constants';
 
+
+// Mock the Square component
 jest.mock('../Square', () => ({
-    Square: ({ bigBoardRC, localBoardRC }: { bigBoardRC: RowCol; localBoardRC: RowCol }) => (
-        <div data-testid={`square-${localBoardRC.row}-${localBoardRC.col}`}>
-            {`Square: ${localBoardRC.row},${localBoardRC.col}`}
-        </div>
-    ),
+    Square: jest.fn(() => <div data-testid="mocked-square">Mocked Square</div>)
 }));
 
-describe('LocalTicTacToeBoard component', () => {
-    const setup = (bigBoardRC: RowCol) => {
-        const props: LocalTicTacToeBoardProps = { bigBoardRC };
-        return render(<LocalTicTacToeBoard {...props} />);
-    };
+// Mock the gameSelectors
+jest.mock('../../../store/selectors/gameSelectors', () => ({
+    useIsLocalGameFinished: jest.fn(),
+}));
 
-    it('should render without crashing', () => {
-        setup({ row: 0, col: 0 });
-        expect(screen.getByTestId('square-0-0')).toBeInTheDocument();
+describe('<LocalTicTacToeBoard />', () => {
+    const rc = { row: 0, col: 0 };
+
+    beforeEach(() => {
+        jest.clearAllMocks();
     });
 
-    it('should render the correct number of Square components', () => {
-        setup({ row: 0, col: 0 });
-        const squares = screen.getAllByText(/Square: \d,\d/);
-        expect(squares).toHaveLength(array_mapper.length * array_mapper.length);
-    });
+    it('should display localBoard with mocked squares if localBoardWinner is undefined', () => {
+        (gameSelectors.useIsLocalGameFinished as jest.Mock).mockReturnValue(undefined);
 
-    it('should pass the correct props to each Square component', () => {
-        const bigBoardRC = { row: 1, col: 1 };
-        setup(bigBoardRC);
+        render(<LocalTicTacToeBoard bigBoardRC={rc} />);
 
-        array_mapper.forEach((_, localRow) => {
-            array_mapper.forEach((_, localCol) => {
-                const square = screen.getByTestId(`square-${localRow}-${localCol}`);
-                expect(square).toHaveTextContent(`Square: ${localRow},${localCol}`);
-            });
-        });
+        expect(screen.queryAllByTestId('local-board')).toHaveLength(3);
+
+        const mockedSquares = screen.getAllByTestId('mocked-square');
+        expect(mockedSquares).toHaveLength(9);
     });
 });

@@ -11,12 +11,14 @@ export const getSquareClassname = (sq: RowCol): string => {
     });
 };
 
-export const getPlayerSymbol = (currentValue: Player | undefined): string | undefined => {
+export const getPlayerSymbol = (currentValue: Player | Tied | undefined): string | undefined => {
     switch (currentValue) {
         case Player.PLAYER_1:
             return 'X';
         case Player.PLAYER_2:
             return 'O';
+        case TIED:
+            return 'T';
         default:
             return undefined;
     }
@@ -57,13 +59,13 @@ export const checkWinner = (board: LocalBoardArray | GameResultsBoard): boolean 
     }
 
     if (allCellsFilled) {
-        return "Tied" as Tied;
+        return TIED as Tied;
     }
 
     return false;
 }
 
-const isTie = (result: any): boolean => {
+export const isTie = (result: any): boolean => {
     return result === TIED;
 }
 

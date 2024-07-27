@@ -1,0 +1,23 @@
+@import '../../styles/fonts.scss';
+
+.player-X,
+.player-O {
+    display: inline-block;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding: 12px 16px;
+    border: 1px black solid;
+    background-color: var(--player-indicator-background-color);
+
+    .current-player-text {
+        @include current-player-text-font;
+    }
+}
+
+.player-X {
+    --player-indicator-background-color: var(--player-one-background-color)
+}
+
+.player-O {
+    --player-indicator-background-color: var(--player-two-background-color)
+}

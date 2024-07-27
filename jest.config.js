@@ -1,12 +1,18 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} **/
 module.exports = {
-  testEnvironment: "jsdom",
+  testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
-    "^.+\\.tsx?$": "babel-jest",
-    '^.+\\.scss$': 'jest-transform-css'
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
   },
   moduleNameMapper: {
-    '\\.(css|less|scss)$': 'identity-obj-proxy'
-  }
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
+  },
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  globals: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/tsconfig.json',
+    },
+  },
 };

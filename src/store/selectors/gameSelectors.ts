@@ -1,6 +1,6 @@
 import { Player } from "@/utils/constants";
 import { GameResults, RowCol } from "../slices/gameSlice";
-import { RootState } from "../store";
+import { RootState } from '../rootReducer';
 
 
 export const useCurrentPlayer = (state: RootState): Player => {
