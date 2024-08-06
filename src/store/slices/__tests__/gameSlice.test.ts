@@ -40,6 +40,9 @@ describe('gameSlice', () => {
         const state: GameState = store.getState().game;
 
         expect(state.board[bigBoardRC.row][bigBoardRC.col].localBoard[localBoardRC.row][localBoardRC.col]).toEqual(Player.PLAYER_1);
+        expect(state.moveHistory![0].player).toEqual(Player.PLAYER_1);
+        expect(state.moveHistory![0].bigRowCol).toEqual(bigBoardRC);
+        expect(state.moveHistory![0].localRowCol).toEqual(localBoardRC);
     });
 
     it('should handle changePlayer action', () => {

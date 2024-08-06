@@ -1,5 +1,5 @@
 import { Player } from "@/utils/constants";
-import { GameResults, RowCol } from "../slices/gameSlice";
+import { GameResults, GameStatus, Move, RowCol } from "../slices/gameSlice";
 import { RootState } from '../rootReducer';
 
 
@@ -32,6 +32,10 @@ export const useIsLocalGameFinished = (state: RootState, bigBoardRC: RowCol): Ga
     return state.game.macroGameResults[bigBoardRC.row][bigBoardRC.col];
 }
 
-export const useGameStatus = (state: RootState) => {
+export const useGameStatus = (state: RootState): GameStatus => {
     return state.game.currentGameStatus;
 }
+
+export const useMoveHistory = (state: RootState): Move[] | undefined => {
+    return state.game.moveHistory;
+};

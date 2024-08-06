@@ -1,37 +1,63 @@
 import React from 'react';
-import * as gameSelectors from '../../../store/selectors/gameSelectors';
 import { GameStatus } from '../../../store/slices/gameSlice';
 import { render } from '../../../../test-utils';
-import { Game } from '..';
+import { screen } from '@testing-library/react'
+import { Game } from '../';
+import { useSelector } from 'react-redux';
+import { useGameStatus } from '../../../store/selectors/gameSelectors';
 import '@testing-library/jest-dom';
 
-const useGameStatusSpy = jest.spyOn(gameSelectors, 'useGameStatus');
 
-// jest.mock('react-redux', () => ({
-//     ...jest.requireActual('react-redux'),
-//     useSelector: jest.fn(),
-// }));
+jest.mock('../TicTacToeBoard', () => ({
+    TicTacToeBoard: () => <div data-testid="mocked-tictactoeboard">Mocked TicTacToeBoard</div>
+}));
+
+jest.mock('../CurrentPlayerIndicator', () => ({
+    CurrentPlayerIndicator: () => <div data-testid="mocked-currentplayerindicator">Mocked CurrentPlayerIndicator</div>
+}));
+
+jest.mock('../GameHistory', () => ({
+    GameHistory: () => <div data-testid="mocked-gamehistory">Mocked GameHistory</div>
+}));
+
+jest.mock('react-redux', () => ({
+    useSelector: jest.fn()
+}));
+
+jest.mock('../../../store/selectors/gameSelectors', () => ({
+    useGameStatus: jest.fn()
+}));
 
 
 describe('<Game />', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
-        useGameStatusSpy.mockReturnValueOnce(GameStatus.IN_PROGRESS);
-    })
+        (useSelector as unknown as jest.Mock).mockClear();
+        (useGameStatus as jest.Mock).mockClear();
+    });
 
-    it('should display current player indicator', () => {
-        const { getByTestId } = render(<Game />);
-        expect(getByTestId("player-indicator")).toBeInTheDocument();
+    it('renders game in progress', () => {
+        (useSelector as unknown as jest.Mock).mockReturnValue(GameStatus.IN_PROGRESS);
+        (useGameStatus as jest.Mock).mockReturnValue(GameStatus.IN_PROGRESS);
+        console.log(Game);
+        render(<Game />);
+
+        expect(screen.getByTestId('game-container')).toBeInTheDocument();
+        expect(screen.getByTestId('mocked-gamehistory')).toBeInTheDocument();
+        expect(screen.getByTestId('mocked-currentplayerindicator')).toBeInTheDocument();
+        expect(screen.getByTestId('mocked-tictactoeboard')).toBeInTheDocument();
+        expect(screen.queryByText('Game Over!')).not.toBeInTheDocument();
     });
-    it('should display TicTacToe board when game is in progress', () => {
-        const { getByTestId } = render(<Game />);
-        expect(getByTestId("macro-board")).toBeInTheDocument();
-    });
-    it('should display Game Over! when game is finished', () => {
-        useGameStatusSpy.mockReturnValueOnce(GameStatus.FINISHED);
-        const { getByTestId } = render(<Game />);
-        const gameContainer = getByTestId("game-container");
-        expect(gameContainer).toBeInTheDocument();
-        expect(gameContainer).toHaveTextContent('Game Over!');
+
+    it('renders game over', () => {
+        (useSelector as unknown as jest.Mock).mockReturnValue(GameStatus.FINISHED);
+        (useGameStatus as jest.Mock).mockReturnValue(GameStatus.FINISHED);
+
+        render(<Game />);
+
+        expect(screen.getByTestId('game-container')).toBeInTheDocument();
+        expect(screen.getByTestId('mocked-gamehistory')).toBeInTheDocument();
+        expect(screen.getByTestId('mocked-currentplayerindicator')).toBeInTheDocument();
+        expect(screen.queryByTestId('mocked-tictactoeboard')).not.toBeInTheDocument();
+        expect(screen.getByText('Game Over!')).toBeInTheDocument();
     });
 })

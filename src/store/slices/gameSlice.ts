@@ -14,8 +14,14 @@ export enum GameStatus {
 }
 
 export interface RowCol {
-    row: number
-    col: number
+    row: number;
+    col: number;
+}
+
+export interface Move {
+    bigRowCol: RowCol;
+    localRowCol: RowCol;
+    player: Player;
 }
 
 export interface PlaySquareInterface {
@@ -33,6 +39,7 @@ export interface GameState {
     currentPlayer: Player;
     macroGameResults: GameResultsBoard;
     currentGameStatus: GameStatus;
+    moveHistory?: Move[];
     gameWinner?: GameResults;
     currentBigSquare?: RowCol;
 }
@@ -54,6 +61,7 @@ const initializeBoard = (): TicTacToeBoard[][] =>
 const initialState: GameState = {
     board: initializeBoard(),
     macroGameResults: initializeMacroGameResults(),
+    moveHistory: [],
     currentGameStatus: GameStatus.IN_PROGRESS,
     currentPlayer: Player.PLAYER_1
 };
@@ -68,6 +76,8 @@ export const gameSlice = createSlice({
             // Change state
             if (state.board[bigBoardRC.row][bigBoardRC.col].localBoard[localBoardRC.row][localBoardRC.col] === undefined) {
                 state.board[bigBoardRC.row][bigBoardRC.col].localBoard[localBoardRC.row][localBoardRC.col] = state.currentPlayer;
+
+                state.moveHistory?.push({ localRowCol: localBoardRC, bigRowCol: bigBoardRC, player: state.currentPlayer });
 
                 if (state.macroGameResults[localBoardRC.row][localBoardRC.col] === undefined && !allSquaresPlayed(state.board[bigBoardRC.row][bigBoardRC.col].localBoard)) {
                     state.currentBigSquare = { row: localBoardRC.row, col: localBoardRC.col };

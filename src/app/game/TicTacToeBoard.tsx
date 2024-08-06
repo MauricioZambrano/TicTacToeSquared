@@ -6,7 +6,6 @@ export interface TicTacToeBoardPops { }
 
 export const TicTacToeBoard: React.FC<TicTacToeBoardPops> = (props) => {
 
-
     return (
         <div className="big-board" data-testid="macro-board">
             {array_mapper.map((_, bigRow) => (

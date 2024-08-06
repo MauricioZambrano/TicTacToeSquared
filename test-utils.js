@@ -2,13 +2,13 @@ import React from 'react';
 import { render as rtlRender } from '@testing-library/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import rootReducer from './src/store/slices/gameSlice';
+import gameReducer from './src/store/slices/gameSlice';
 
 function render(
     ui,
     {
         preloadedState,
-        store = configureStore({ reducer: rootReducer, preloadedState }),
+        store = configureStore({ reducer: gameReducer, preloadedState }),
         ...renderOptions
     } = {}
 ) {
