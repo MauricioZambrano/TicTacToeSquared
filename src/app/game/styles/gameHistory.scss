@@ -1,4 +1,39 @@
 .game-history {
-    max-height: 500px;
     padding-top: 64px;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+
+    .table-container {
+        overflow-y: auto;
+        flex: 1;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+            background: var(--player-indicator-background-color);
+
+            .player-X {
+                --player-indicator-background-color: var(--player-one-background-color);
+            }
+
+            .player-O {
+                --player-indicator-background-color: var(--player-two-background-color);
+            }
+        }
+
+        thead,
+        th {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+        }
+    }
 }

@@ -97,6 +97,7 @@ export const gameSlice = createSlice({
 
                 // Check if the game is over
                 const gameCheck: GameResults | boolean = isGameOver(state.macroGameResults);
+
                 if (gameCheck) {
                     state.gameWinner = gameCheck as GameResults;
                     state.currentGameStatus = GameStatus.FINISHED;
