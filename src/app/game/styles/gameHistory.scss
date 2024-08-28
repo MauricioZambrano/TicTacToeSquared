@@ -19,11 +19,11 @@
             text-align: center;
             background: var(--player-indicator-background-color);
 
-            .player-X {
+            &.player-sign-X {
                 --player-indicator-background-color: var(--player-one-background-color);
             }
 
-            .player-O {
+            &.player-sign-O {
                 --player-indicator-background-color: var(--player-two-background-color);
             }
         }

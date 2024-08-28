@@ -7,8 +7,10 @@
   --square-border-color: black;
   --square-hover-color: #ededed;
   --square-side-length: 70px;
+  --small-square-side-length: 18px;
   --player-one-background-color: #{$player_one};
   --player-two-background-color: #{$player_two};
+  --small-board-selected-color: var(--app-background-color);
   --player-indicator-background-color: var(--app-background-color);
   --local-board-result-background-color: var(--square-background-color);
   --local-board-padding: 10px;

@@ -5,6 +5,7 @@ import { getPlayerSymbol } from '../../utils/gameHelpers';
 import "./styles/gameHistory.scss"
 import { ReactNode, useEffect, useRef } from "react";
 import { Move } from "@/store/slices/gameSlice";
+import { MoveHistoryIcon } from "./MoveHistoryIcon";
 
 export interface GameHistoryProps {
 
@@ -27,9 +28,14 @@ export const GameHistory = (props: GameHistoryProps) => {
             return (
                 <tr key={key}>
                     <td>{key + 1}</td>
-                    <td className={`player-${playerSymbol}`}>{playerSymbol}</td>
-                    <td>{`${move.bigRowCol.row} ${move.bigRowCol.col}`}</td>
-                    <td>{`${move.localRowCol.row} ${move.localRowCol.col}`}</td>
+                    <td className={`player-sign-${playerSymbol}`}>{playerSymbol}</td>
+                    <td>
+                        <MoveHistoryIcon rowCol={move.bigRowCol} player={move.player} />
+                    </td>
+                    {/* <td>{`${move.localRowCol.row} ${move.localRowCol.col}`}</td> */}
+                    <td>
+                        <MoveHistoryIcon rowCol={move.localRowCol} player={move.player} />
+                    </td>
                 </tr>
             )
         }) : <></>);

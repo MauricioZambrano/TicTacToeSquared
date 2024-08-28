@@ -1,0 +1,50 @@
+@import '../../styles/globals.scss';
+
+.small-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .small-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .square {
+            height: var(--small-square-side-length);
+            width: var(--small-square-side-length);
+
+            &.selected-square {
+                background: var(--small-board-selected-color);
+
+                &.is-player-one {
+                    --small-board-selected-color: var(--player-one-background-color);
+                }
+
+                &.is-player-two {
+                    --small-board-selected-color: var(--player-two-background-color);
+                }
+            }
+
+            &.top-border {
+                @include border-style(border-top);
+                border-width: thin;
+            }
+
+            &.bottom-border {
+                @include border-style(border-bottom);
+                border-width: thin;
+            }
+
+            &.left-border {
+                @include border-style(border-left);
+                border-width: thin;
+            }
+
+            &.right-border {
+                @include border-style(border-right);
+                border-width: thin;
+            }
+        }
+    }
+}
